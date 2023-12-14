@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Arch Form</title>
+    <style>
+      body {
+        margin: 0;
+      }
+    </style>
+    <link rel="stylesheet" href="static/css/nice-select2.css" />
+    <link rel="stylesheet" href="static/css/basscss.min.css" />
+    <link rel="stylesheet" href="static/css/main.css" />
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="static/js/nice-select2.js"></script>
+  </head>
+  <nav id="nav-bar">
+    <a href=".">
+      <div id="logo-and-title-container" class="col card-container flex items-center">
+        <img id="logo-img" src="static/img/logo.png" alt="logo" class="self-center"/>
+        <span class="self-center title-span">ArchForm</span>
+      </div>
+    </a>
+
+    <div id="search-bar-container" class="col card-container clearfix">
+      <!-- ModelID -->
+      <div class="col">
+        <div id="model-selector" class="dropdown">
+          <button id="model-dropdown-btn" class="dropbtn">Model</button>
+          <div id="model-dropdown-content" class="dropdown-content">
+            <input
+              type="text"
+              placeholder="Search.."
+              id="model-dropdown-search-input"
+              class="dropdown-search-input"
+            />
+          </div>
+        </div>
+      </div>
+      <!-- Competition -->
+      <div class="col">
+        <div id="competition-selector" class="dropdown">
+          <button id="competition-dropdown-btn" class="dropbtn">
+            Competition
+          </button>
+          <div id="competition-dropdown-content" class="dropdown-content">
+            <input
+              type="text"
+              placeholder="Search.."
+              id="competition-dropdown-search-input"
+              class="dropdown-search-input"
+            />
+          </div>
+        </div>
+      </div>
+      <!-- Rank -->
+      <div class="col">
+        <div id="rank-selector" class="dropdown">
+          <button id="rank-dropdown-btn" class="dropbtn">Rank</button>
+          <div id="rank-dropdown-content" class="dropdown-content">
+            <input
+              type="text"
+              placeholder="Search.."
+              id="rank-dropdown-search-input"
+              class="dropdown-search-input"
+            />
+          </div>
+        </div>
+      </div>
+      <!-- Architect -->
+      <div class="col">
+        <div id="architect-selector" class="dropdown">
+          <button id="architect-dropdown-btn" class="dropbtn">Architect</button>
+          <div id="architect-dropdown-content" class="dropdown-content">
+            <input
+              type="text"
+              placeholder="Search.."
+              id="architect-dropdown-search-input"
+              class="dropdown-search-input"
+            />
+            <!-- <a href="Thomas Fischer Architekt">  Thomas Fischer Architekt</a>
+            <a href="Caesar Zumthor Architekten">Caesar Zumthor Architekten</a>
+            <a href="Soppelsa Architekten">Soppelsa Architekten</a>
+            <a href="Zenit Design">Zenit Design</a> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </nav>
+  
+  <!-- interpolation dialog -->
+  <dialog id="interpolation-dialog">
+    <div class="dialog-container clearfix">
+      <div id="interpolation-dialog-sidebar" class="dialog-sidebar col col-4">
+        <!-- items -->
+        <div id="interpolation-dialog-sidebar-item-template" class="interpolation-dialog-sidebar-item clearfix">
+          <!-- <div class="sidebar-item-thumbnail col col-3">
+            <img src="static/img/test_2d.png" class="sidebar-item-img fit"/>
+          </div> -->
+          <div class="sidebar-item-desc col col-12">
+            <h3 class="mx2 my1">L333</h3>
+            <div class="slider-container ml2">
+              <input type="range" min="1" max="100" value="50" class="slider interpolation-weight-slider" id="myRange">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="interpolation-visualizer-canvas-container" class="dialog-content col col-8">
+        <canvas id="interpolation-visualizer-canvas" width="100%"></canvas>
+        <div id="interpolation-visualizer-control-panel">
+          <img src="static/img/download-solid.svg" class="download-svg" id="btn-download-interpolated-ply">
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <body>  
+    <div class="control-panel card-container border fixed">
+      <!-- Drop down list for different experiment -->
+      <!-- <fieldset> -->
+        <legend>Point Cloud Type</legend>
+        <select id="point-cloud-type-selector">
+          <option value="uniform">Uniform</option>
+          <option value="horizontal">Horizontal</option>
+          <option value="vertical">Vertical</option>
+          <option value="relative_scaled">Relative Scaled</option>
+          <option value="rotated">Rotated</option>
+        </select>
+      <!-- </fieldset> -->
+      <!-- <script>NiceSelect.bind(document.getElementById("point-cloud-type-selector"), {searchable: true})</script> -->
+
+      <!-- Checkbox for visualization -->
+      <!-- <fieldset> -->
+        <legend class="mt2">Cluster Color</legend>
+          <!-- Coloring-->
+          <button id="color-rank-btn">Rank</button> <br>
+          <button id="color-competition-btn">Competition</button> <br>
+          <button id="color-similarity-btn">Similarity</button> <br>
+          <button id="color-kmeans-btn">Kmeans</button> <br>
+          <button id="color-knn-btn">KNN</button> <br>
+          <button id="color-reset-btn" class="mt1">Reset</button> <br>
+        
+        <legend class="mt2">Cluster Relation</legend>
+        <button id="line-competition-btn">Competition</button> <br>
+        
+        <!-- <input type="checkbox" id="line-competition-checkbox" name="line-competition-checkbox">
+        <label for="line-competition-checkbox" class="line-type-label">Competition</label><br> -->
+      <!-- </fieldset> -->
+
+      <!-- Interpolation -->
+      <!-- <fieldset> -->
+        <legend class="mt2">Interpolation</legend>
+        <div id="interpolation-src-list"></div>
+        <button id="btn-add-interp">+ Current Model</button>
+        <button id="btn-open-interp-dialog">Open Interpolation UI</button>
+    <!-- </fieldset> -->
+    </div>
+
+    <!-- Left Information -->
+    <div id="container">
+      <script src="bundle.js" type="module"></script>
+      <div class="model-info-wrapper" id="model-info-wrapper">
+        <h2 id="model-info-name">Faux Jumeaux</h2>
+        <p><a href="#"><u>Competition</u><br><span id="model-info-competition">Ersatzneubau Sekundarschule Laufen</a></p>
+        <p><a href="#"><u>Architect</u><br><span id="model-info-architect">Caesar Zumthor Architekten</a></p>
+        <p><a href="#"><u>Rank</u><br><span id="model-info-rank">#2</span></a></p>
+        <p><a href="#"><u>Year</u><br><span id="model-info-year">2014</span></a>
+        <p><a href="#"><u>Location</u><br><span id="model-info-city">Lausanne, Vaud</span></a></p>
+        <!-- <div class="neighborListItem">
+					<h5>Model Name</h5>
+					<div class="inlineWrapper">
+						<div class="inline similarityChartWrapper">
+							<div class="similarityChart" style="width: 85%;"></div>
+						</div>
+						<div class="inline similarityValue">85%</p>
+					</div>
+				</div> -->
+      </div>
+    </div>
+    <div id="similar-models-container", class="clearfix fixed bottom-0 left-0 m2", style="width: 100%">
+      <div id="my_dataviz" style="width: 100%"></div>
+      <script>
+
+
+        // // set the dimensions and margins of the graph
+        // var margin = {top: 10, right: 40, bottom: 40, left: 40},
+        //     width = 1500,//460 - margin.left - margin.right,
+        //     height = 200 - margin.top - margin.bottom;
+        
+        // // append the svg object to the body of the page
+        // var svg = d3.select("#my_dataviz")
+        //   .append("svg")
+        //     .attr("width", width + margin.left + margin.right)
+        //     .attr("height", height + margin.top + margin.bottom)
+        //   .append("g")
+        //     .attr("transform",
+        //           "translate(" + margin.left + "," + margin.top + ")");
+        
+        // // Parse the Data
+        // d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv", function(data) {
+        //   console.log(data)
+        // data = []
+        // for(let i = 0 ; i < 100; i++){
+        //   data.push({Country: "AA" + i, Value: 0.9 ** i })
+        // }
+        // data["columns"] = ["Country", "Value"]
+        // console.log(data)
+        // // X axis
+        // var x = d3.scaleBand()
+        //   .range([ 0, width ])
+        //   .domain(data.map(function(d) { return d.Country; }))
+        //   .padding(0.2);
+        // svg.append("g")
+        //   .attr("transform", "translate(0," + height + ")")
+        //   .call(d3.axisBottom(x))
+        //   .selectAll("text")
+        //     .attr("transform", "translate(-10,0)rotate(-45)")
+        //     .style("text-anchor", "end");
+        
+        // // Add Y axis
+        // var y = d3.scaleLinear()
+        //   .domain([0, 1])
+        //   .range([ height, 0]);
+        // svg.append("g")
+        //   .call(d3.axisLeft(y));
+        
+        // // Bars
+        // svg.selectAll("mybar")
+        //   .data(data)
+        //   .enter()
+        //   .append("rect")
+        //     .attr("x", function(d) { return x(d.Country); })
+        //     .attr("width", x.bandwidth())
+        //     .attr("fill", "#69b3a2")
+        //     // no bar at the beginning thus:
+        //     .attr("height", function(d) { return height - y(0); }) // always equal to 0
+        //     .attr("y", function(d) { return y(0); })
+        
+        // // Animation
+        // svg.selectAll("rect")
+        //   .transition()
+        //   .duration(800)
+        //   .attr("y", function(d) { return y(d.Value); })
+        //   .attr("height", function(d) { return height - y(d.Value); })
+        //   .delay(function(d,i){console.log(i) ; return(i*100)})
+        
+        // })
+        
+        </script>
+    </div>
+  </body>
+</html>
