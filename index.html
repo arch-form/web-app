@@ -14,6 +14,13 @@
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="static/js/nice-select2.js"></script>
     <script src="https://unpkg.com/typeit@8.8.3/dist/index.umd.js"></script>
+    <script type="importmap">
+      { "imports": { "AlphaWrap": "./static/onnx/alpha_wrap.js" } }
+    </script>
+    <script type="module">
+      import { default as createAlphaWrapModule } from 'AlphaWrap';
+      createAlphaWrapModule().then(m => { window.AlphaWrapModule = m; });
+    </script>
   </head>
   <nav id="nav-bar">
     <a href=".">
@@ -106,9 +113,6 @@
           id="interpolation-dialog-sidebar-item-template"
           class="interpolation-dialog-sidebar-item clearfix"
         >
-          <!-- <div class="sidebar-item-thumbnail col col-3">
-            <img src="static/img/test_2d.png" class="sidebar-item-img fit"/>
-          </div> -->
           <div class="sidebar-item-desc col col-12">
             <h3 class="mx2 my1">L333</h3>
             <div class="slider-container ml2">
@@ -123,24 +127,26 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <div id="interpolation-dialog-alpha-wrap" class="col col-12" style="padding: 8px 12px; border-top: 1px solid #ddd; margin-top: 8px;">
-        <legend style="font-weight:bold; margin-bottom:6px;">Alpha Wrap</legend>
-        <label style="display:block; margin-bottom:4px;">
-          Alpha
-          <input type="range" id="alpha-wrap-alpha" min="1" max="100" value="10" style="width:120px; vertical-align:middle;">
-          <span id="alpha-wrap-alpha-val">10</span>
-        </label>
-        <label style="display:block; margin-bottom:4px;">
-          Offset
-          <input type="range" id="alpha-wrap-offset" min="1" max="1000" value="300" style="width:120px; vertical-align:middle;">
-          <span id="alpha-wrap-offset-val">300</span>
-        </label>
-        <button id="btn-generate-alpha-wrap" style="margin-top:4px;">Generate Wrap</button>
-        <span id="alpha-wrap-status" style="margin-left:8px; font-size:0.85em; color:#555;"></span>
-        <br>
-        <button id="btn-download-alpha-wrap-ply" style="display:none; margin-top:4px;">Download Wrapped PLY</button>
+        <!-- Alpha Wrap controls -->
+        <div id="interpolation-dialog-alpha-wrap" class="interpolation-dialog-sidebar-item clearfix">
+          <div class="sidebar-item-desc col col-12">
+            <h3 class="mx2 my1">Alpha Wrap</h3>
+            <div class="mx2">
+              <label>Alpha <span id="alpha-wrap-alpha-val">10</span></label>
+              <div class="slider-container ml2">
+                <input type="range" id="alpha-wrap-alpha" min="1" max="100" value="10" class="slider">
+              </div>
+              <label>Offset <span id="alpha-wrap-offset-val">300</span></label>
+              <div class="slider-container ml2">
+                <input type="range" id="alpha-wrap-offset" min="1" max="1000" value="300" class="slider">
+              </div>
+              <button id="btn-generate-alpha-wrap" class="mt1">Generate Wrap</button>
+              <span id="alpha-wrap-status" style="font-size:0.85em; color:#555; display:block; margin-top:2px;"></span>
+              <button id="btn-download-alpha-wrap-ply" style="display:none" class="mt1">Download PLY</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div
@@ -359,6 +365,12 @@
         <label for="line-competition-checkbox" class="line-type-label">Competition</label><br> -->
       <!-- </fieldset> -->
 
+      <!-- Preview Size -->
+      <legend class="mt2">Preview Size</legend>
+      <div class="slider-container">
+        <input type="range" id="preview-size-slider" min="10" max="500" value="200" class="slider">
+      </div>
+
       <!-- Interpolation -->
       <!-- <fieldset> -->
       <legend class="mt2">Interpolation</legend>
@@ -370,13 +382,6 @@
 
     <!-- Left Information -->
     <div id="container">
-      <script type="importmap">
-        { "imports": { "AlphaWrap": "./static/onnx/alpha_wrap.js" } }
-      </script>
-      <script type="module">
-        import { default as createAlphaWrapModule } from 'AlphaWrap';
-        createAlphaWrapModule().then(m => { window.AlphaWrapModule = m; });
-      </script>
       <script src="bundle.js" type="module"></script>
       <div class="model-info-wrapper" id="model-info-wrapper">
         <h2 id="model-info-name"></h2>

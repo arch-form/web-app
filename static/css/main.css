@@ -251,6 +251,7 @@ fieldset {
 
 .dialog-sidebar{
     height: 100%;
+    overflow-y: auto;
 }
 
 .dialog-container{
