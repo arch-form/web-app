@@ -353,3 +353,30 @@ fieldset {
 .line-type-label{
     font-size: 0.9em;
 }
+
+.lil-gui {
+    position: fixed;
+    z-index: 1000;
+}
+
+#chat-content {
+    padding: 1em;
+}
+
+#chat-question {
+    padding-left: 1em;
+}
+
+.chat-question-message-option {
+    color: #0094C7;
+}
+
+#chat-question-input{
+    width: 95%;
+    height: 2em;
+    margin-top: 1em;
+}
+
+.chat-content-item {
+    display: none;
+}
